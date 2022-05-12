@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    env_file:
+      - ./.envs/dev.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+  web:
+    build: ./web/
+    container_name: web
+    depends_on:
+      - db
+    env_file:
+      - ./.envs/dev.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./web/:/usr/app/"
+    entrypoint: |
+      uvicorn main:app --reload
+volumes:
+  db:
+    driver: local
+
+networks:
+  nginx:
+    external: true

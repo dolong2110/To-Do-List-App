@@ -1,0 +1,19 @@
+name: To do CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Building containers and running tests
+        run: |
+          docker-compose -f ./docker-compose-test.yaml up --build --exit-code-from web-test

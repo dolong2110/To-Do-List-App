@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  web-test:
+    container_name: web-test
+    env_file:
+      - ./.envs/test.env
+    build: ./web/
+    entrypoint: pytest
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  nginx:
+    external: true
